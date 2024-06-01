@@ -20,6 +20,13 @@ jobs:
   steps:
   - checkout: self
     submodules: true
+  - bash: |
+      echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL]$(ENV_URL_DEV)"
+      echo "##vso[task.setvariable variable=NUXT_API_PATH]$(API_PATH)"
+      echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE]$(AAD_ENDPOINT_BASE)"
+      echo "##vso[task.setvariable variable=NUXT_TENANT_ID]$(TENANT_ID)"
+      echo "##vso[task.setvariable variable=NUXT_CLIENT_ID]$(CLIENT_ID)"
+      echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET]$(CLIENT_SECRET)"
   - task: AzureStaticWebApp@0
     inputs:
       azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_DUNE_0C6E15E00)

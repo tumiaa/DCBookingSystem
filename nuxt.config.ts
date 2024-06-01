@@ -1,4 +1,32 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true }
-})
+  devtools: { enabled: true },
+  future:{
+    // typescriptBundlerResolution:true
+  },
+
+  modules: ["@pinia/nuxt", "@nuxt/eslint",'@nuxt/devtools'],
+  eslint: {
+    //custom opts here
+  },
+  css:['~/assets/base.css','~/assets/main.css'],
+  imports: {
+    dirs: [
+      "composables",
+      "composables/*/index.{ts,js,mjs,mts}",
+      "composables/**",
+      "types",
+      "types/*.{ts,d.ts}"
+    ],
+  },
+  runtimeConfig: {
+    public: { NUXT_PUBLIC_ENV_URL: process.env.NUXT_PUBLIC_ENV_URL },
+    NUXT_API_PATH: process.env.NUXT_API_PATH,
+
+    NUXT_AAD_ENDPOINT_BASE: process.env.NUXT_AAD_ENDPOINT_BASE,
+   
+    NUXT_TENANT_ID: process.env.NUXT_TENANT_ID,
+    NUXT_CLIENT_ID: process.env.NUXT_CLIENT_ID,
+    NUXT_CLIENT_SECRET: process.env.NUXT_CLIENT_SECRET,
+  },
+});
