@@ -1,11 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import api from './plugins/02.api'
 export default defineNuxtConfig({
   devtools: { enabled: true },
   future:{
     // typescriptBundlerResolution:true
   },
 
-  modules: ["@pinia/nuxt", "@nuxt/eslint",'@nuxt/devtools'],
+  modules: ["@pinia/nuxt", "@nuxt/eslint",'@nuxt/devtools','@nuxt/test-utils/module'],
   eslint: {
     //custom opts here
   },

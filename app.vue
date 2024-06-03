@@ -2,21 +2,14 @@
 const { $api } = useNuxtApp()
 const repo = repository($api);
 console.log($api, useRuntimeConfig())
-// const {data:{value:{value}}} = await useAsyncData(async ()=> await $api(`/${repo.bookings.bookingsTable}`))
-
-const data = await useAsyncData(async()=>await repo.tours.getTourNames('School Tour'));
+const data = await useAsyncData(async()=> await repo.tours.getTourNames('school'))
 console.log(data)
-// const data = await useAsyncData(()=>repo.get(`/${repo.bookings.bookingsTable}`))
-// const d = await useFetchOnLoad(`/${repo.bookings.bookingsTable}`,{default:()=>{}});
-// console.log(data,d)
 </script>
 
 <template>
   <NuxtLayout>
-  <!-- <component :is="$route.meta.layout || 'div'"> -->
     <NuxtPage />
   </NuxtLayout>
-  <!-- </component> -->
 </template>
 
 <style scoped>
