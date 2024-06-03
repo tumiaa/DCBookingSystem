@@ -1,0 +1,37 @@
+name: Azure Static Web Apps CI/CD
+
+trigger:
+  branches:
+    include:
+      - "*"
+variables:
+  isMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isTestBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+  isDevBranch: $[ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'],'refs/heads/test')]
+
+stages:
+  - stage: Dev
+    condition: and(succeeded(), eq(variables['isDevBranch'], true))
+    jobs:
+      - template: pipelines/build-deploy-job.yml
+        parameters:
+          environment: dev
+          env_url: $(ENV_URL_DEV)
+
+  - stage: Test
+    condition: and(succeeded(), eq(variables['isTestBranch'], true))
+    dependsOn: Dev
+    jobs:
+      - template: pipelines/build-deploy-job.yml
+        parameters:
+          environment: test
+          env_url: $(ENV_URL_TEST)
+
+  - stage: Prod
+    condition: and(succeeded(), eq(variables['isMainBranch'], true))
+    dependsOn: Test
+    jobs:
+      - template: pipelines/build-deploy-job.yml
+        parameters:
+          environment: prod
+          env_url: $(ENV_URL_PROD)
