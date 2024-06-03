@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import GlobalHeader from '../components/GlobalHeader.vue'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 
 import { tourTypeMap } from '@/types/booking.d';

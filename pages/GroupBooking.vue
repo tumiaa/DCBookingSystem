@@ -1,125 +1,135 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, type Ref } from 'vue'
-// import GroupBookingSubform from '@/components/booking-forms/GroupBookingSubform.vue'
+import { onMounted, ref, watch, type Ref } from "vue";
+import GroupBookingSubform from '@/components/booking-forms/GroupBookingSubform.vue'
 // import { useBookingStore } from '@/stores/booking'
 import {
   tourTypeMap,
   type GroupBookingFormData,
   type GroupBookingSubformDataItem,
-  type GroupBookingSubformOptions
-} from '@/types/booking.d'
-import { useRoute } from 'vue-router'
+  type GroupBookingSubformOptions,
+} from "@/types/booking.d";
+// import { useRoute } from "vue-router";
 import {
   groupBookingDefaults,
   groupBookingFieldData,
-  type SubformFields
-} from '~/components/booking-forms/GroupBookingFormFields'
+  type SubformFields,
+} from "~/components/booking-forms/GroupBookingFormFields";
 // import FormItemGroupWithSlots from '@/components/form-item/FormItemGroupWithSlots.vue'
-import type { FormQuestion, FormQuestionPair } from '@/components/form-item/FormItem'
+import type {
+  FormQuestion,
+  FormQuestionPair,
+} from "@/components/form-item/FormItem";
 // import { useBookingStore } from '~/store/booking'
 // import FormItem from '@/components/form-item/FormItem.vue'
 // import { definePageMeta } from 'nuxt/dist/pages/runtime';
 
-
 definePageMeta({
-layout: 'layout-with-header', path:'/group'
-})
+  layout: "layout-with-header",
+  path: "/group-booking/:id",
+  name: "GroupBookingForm",
+  params: { id: "school" },
+  title:'Group Bookings'
+});
 // const bookingStore = useBookingStore()
-const subformData: Ref<GroupBookingSubformDataItem[]> = ref([groupBookingDefaults.subform])
+const subformData: Ref<GroupBookingSubformDataItem[]> = ref([
+  groupBookingDefaults.subform,
+]);
 
 function addSubform() {
-  if (subformData.value.length >= 15) return
-  subformData.value.push(groupBookingDefaults.subform)
+  if (subformData.value.length >= 15) return;
+  subformData.value.push(groupBookingDefaults.subform);
 }
 
 function removeSubform(index: number) {
-  subformData.value.splice(index, 1)
+  subformData.value.splice(index, 1);
 }
 
-const formData: Ref<GroupBookingFormData> = ref()
-formData.value = groupBookingDefaults.form
+const formData: Ref<GroupBookingFormData> = ref();
+formData.value = groupBookingDefaults.form;
 
-let myFormRef: Ref<any>
-let mySubformRef: Ref<any>
+let myFormRef: Ref<any>;
+let mySubformRef: Ref<any>;
 
 async function submitForm() {
   // await bookingStore.submitGroupBooking(formData.value, subformData.value)
 }
 
-const subformBookingCat: Ref<GroupBookingSubformOptions> = ref({ tourNames: [], tourType: '' })
-const subformItems = ref(groupBookingFieldData.subform)
+const subformBookingCat: Ref<GroupBookingSubformOptions> = ref({
+  tourNames: [],
+  tourType: "",
+});
+const subformItems = ref(groupBookingFieldData.subform);
 
 const getTourTypeSelectOpts = async (initSubformItems: {
   tourType: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'select' | 'combobox'
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "select" | "combobox";
     options: {
-      defaultValue?: string | boolean | undefined
+      defaultValue?: string | boolean | undefined;
       values: (
         | { value: string; displayValue: string }
         | { value: string | boolean; displayValue: string }
-      )[]
-    }
-  }
+      )[];
+    };
+  };
   attendanceNumber: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'range'
-    min: number
-    max: number
-  }
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "range";
+    min: number;
+    max: number;
+  };
   alternativeDates1: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'date'
-  }
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "date";
+  };
   alternativeDates2: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'date'
-  }
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "date";
+  };
   alternativeDates3: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'date'
-  }
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "date";
+  };
   onsiteTravelMethod: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'select' | 'combobox'
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "select" | "combobox";
     options: {
-      defaultValue?: string | boolean | undefined
+      defaultValue?: string | boolean | undefined;
       values: (
         | { value: string; displayValue: string }
         | { value: string | boolean; displayValue: string }
-      )[]
-    }
-  }
+      )[];
+    };
+  };
   specialReq: {
-    id: keyof GroupBookingSubformDataItem
-    label?: string | undefined
-    required: boolean
-    maxWidth?: number | undefined
-    type: 'textarea'
-    placeholder?: string | undefined
-  }
+    id: keyof GroupBookingSubformDataItem;
+    label?: string | undefined;
+    required: boolean;
+    maxWidth?: number | undefined;
+    type: "textarea";
+    placeholder?: string | undefined;
+  };
 }) => {
   // const tourType = tourTypeMap[useRoute().params.id as keyof typeof tourTypeMap]
   // const tourNames = await bookingStore.getTourNames(tourType)
-
   // const initTourTypes = initSubformItems.tourType
   // console.log(`found type: ${tourType}, returned with`)
   // console.log(tourNames)
@@ -131,23 +141,29 @@ const getTourTypeSelectOpts = async (initSubformItems: {
   //   }
   // }
   // return mapped
-}
+};
 onMounted(async () => {
   // subformItems.value = await getTourTypeSelectOpts(subformItems.value)
-})
+});
 
 const handleFormDataChange = (newFormValues: GroupBookingFormData) => {
-  formData.value = newFormValues
-  console.log(formData.value, subformData.value)
-}
+  formData.value = newFormValues;
+  console.log(formData.value, subformData.value);
+};
 
 const getId = (
   item:
-    | (FormQuestion<GroupBookingFormData> | FormQuestionPair<GroupBookingFormData>)
-    | (FormQuestion<GroupBookingSubformDataItem> | FormQuestionPair<GroupBookingSubformDataItem>)
+    | (
+        | FormQuestion<GroupBookingFormData>
+        | FormQuestionPair<GroupBookingFormData>
+      )
+    | (
+        | FormQuestion<GroupBookingSubformDataItem>
+        | FormQuestionPair<GroupBookingSubformDataItem>
+      )
 ) => {
-  return Array.isArray(item) ? item[0].id + item[1].id : item.id
-}
+  return Array.isArray(item) ? item[0].id + item[1].id : item.id;
+};
 
 const {
   addressCity,
@@ -162,13 +178,13 @@ const {
   lastName,
   phoneNumber,
   schoolName,
-  sendMarketingEmail
-} = groupBookingFieldData.form
+  sendMarketingEmail,
+} = groupBookingFieldData.form;
 
 watch(formData, (s) => {
-  console.log(s)
-  console.log(subformData.value)
-})
+  console.log(s);
+  console.log(subformData.value);
+});
 </script>
 
 <template>
@@ -185,7 +201,12 @@ watch(formData, (s) => {
       }
     "
   >
-    <form ref="myFormRef" @submit.prevent="() => submitForm" class="form" autocomplete="on">
+    <form
+      ref="myFormRef"
+      @submit.prevent="() => submitForm"
+      class="form"
+      autocomplete="on"
+    >
       <FormItemGroupWithSlots>
         <div class="form-item" :key="getId(firstName)">
           <FormItem
@@ -306,8 +327,8 @@ watch(formData, (s) => {
       class="button--primary word-button"
       @click="
         () => {
-          mySubformRef.requestSubmit()
-          myFormRef.requestSubmit()
+          mySubformRef.requestSubmit();
+          myFormRef.requestSubmit();
         }
       "
     >
@@ -339,7 +360,7 @@ watch(formData, (s) => {
 }
 .section-line-anchor::before,
 .section-line-anchor::after {
-  content: '';
+  content: "";
   flex: 1;
   border-bottom: 1px solid transparent;
   /* hsla(160, 100%, 37%, 1); */
