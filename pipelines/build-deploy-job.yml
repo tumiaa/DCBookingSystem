@@ -23,7 +23,7 @@ jobs:
       echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET]$(CLIENT_SECRET)"
   - task: AzureStaticWebApp@0
     inputs:
-      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_DUNE_0C6E15E00)
       app_location: "/" # App source code path
       api_location: ".output/server" # Api source code path - optional
       output_location: ".output/public" # Built app content directory - optional
