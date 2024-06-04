@@ -42,8 +42,7 @@ export default defineNuxtPlugin({
     // const token = auth?.token;
 
     const api = $fetch.create({
-      baseURL:
-        runtimeConfig.public.NUXT_PUBLIC_ENV_URL + runtimeConfig.NUXT_API_PATH,
+      // baseURL:runtimeConfig.public.NUXT_PUBLIC_ENV_URL,
 
       onRequest({ request, options, error }) {
         const headers = (options.headers ||= {});

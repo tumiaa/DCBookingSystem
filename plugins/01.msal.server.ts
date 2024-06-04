@@ -5,7 +5,7 @@ import {
 } from "@azure/msal-node";
 
 export default defineNuxtPlugin({
-  _name:'msal',
+  _name: "msal",
   name: "msal",
   async setup() {
     const {
@@ -16,6 +16,7 @@ export default defineNuxtPlugin({
       public: { NUXT_PUBLIC_ENV_URL },
     } = useRuntimeConfig();
 
+    const envUrlBase = NUXT_PUBLIC_ENV_URL.split("/api")[0];
     const msalConfig: Configuration = {
       auth: {
         clientId: NUXT_CLIENT_ID,
@@ -34,7 +35,7 @@ export default defineNuxtPlugin({
 
     function getRequestToken() {
       const tokenReq: ClientCredentialRequest = {
-        scopes: [NUXT_PUBLIC_ENV_URL + "/.default"],
+        scopes: [envUrlBase + "/.default"],
       };
       return tokenReq;
     }

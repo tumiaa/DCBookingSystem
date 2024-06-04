@@ -8,7 +8,7 @@ import { type H3Event, type EventHandlerRequest } from "h3";
  */
 export const useProxy = async (event: H3Event<EventHandlerRequest>) => {
   const config = useRuntimeConfig();
-  const proxyUrl = `${config.public.NUXT_PUBLIC_ENV_URL}${config.NUXT_API_PATH}`;
+  const proxyUrl = `${config.public.NUXT_PUBLIC_ENV_URL}`;
 
   const path = event.path.replace(/^\/api\//, "");
   const target = joinURL(proxyUrl, path);

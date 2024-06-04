@@ -16,7 +16,6 @@ jobs:
     submodules: true
   - bash: |
       echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL]$(parameters.env_url)"
-      echo "##vso[task.setvariable variable=NUXT_API_PATH]$(API_PATH)"
       echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE]$(AAD_ENDPOINT_BASE)"
       echo "##vso[task.setvariable variable=NUXT_TENANT_ID]$(TENANT_ID)"
       echo "##vso[task.setvariable variable=NUXT_CLIENT_ID]$(CLIENT_ID)"
