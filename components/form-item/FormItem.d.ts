@@ -9,11 +9,11 @@ type FormQDefault<T extends FormDataTypes> = {
 }
 export type SelectOptionValue =
   | { value: string; displayValue: string }
-  | { value: boolean | string; displayValue: string }
+  | { value: boolean | string|number; displayValue: string }
 export type SelectOptionsValues = SelectOptionValue[]
 
 type SelectOptions = {
-  defaultValue?: string | boolean
+  defaultValue?: string 
   values: SelectOptionsValues
 }
 

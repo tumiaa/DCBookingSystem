@@ -5,10 +5,14 @@ import type {
   SelectOptionValue,
 } from "./form-item/FormItem";
 
-import {createDropdownHandler, createSelectHandler, createHighlightHandler} from './ComboBox.util'
+import {
+  createDropdownHandler,
+  createSelectHandler,
+  createHighlightHandler,
+} from "./ComboBox.util";
 const props = defineProps<{
   data: SelectOptionsValues;
-  defaultValue?: string | boolean;
+  defaultValue?: string;
   value: any;
   id: string;
   maxWidth?: number;
@@ -16,54 +20,48 @@ const props = defineProps<{
 
 const emit = defineEmits(["valueChange"]);
 
-const inputDisplayValue: Ref<string> = ref("");
+const inputDisplayValue: Ref<string> = ref(props.defaultValue ?? "");
 const inputValue: ComputedRef<string | boolean | number> = computed(() => {
-  return (
+  const c =
     props.data.find((x) => x.displayValue == inputDisplayValue.value)?.value ??
-    ""
-  );
+    "";
+  return c;
 });
 const isDropdownOpen = ref(false);
-const filteredOptions = ref(props.data);
 const highlightedIndex = ref(-1);
 
-const comboboxContext: ComputedRef<ComboboxContext> = computed(() => ({
-  highlightedIndex,
-  filteredOptions,
-  inputDisplayValue,
-  isDropdownOpen,
-}));
-
 const dropdownHandler: ComputedRef<DropdownHandler> = computed(() =>
-  createDropdownHandler(comboboxContext.value)
+  createDropdownHandler({ isDropdownOpen })
 );
 
 const selectHandler: ComputedRef<SelectHandler> = computed(() =>
-  createSelectHandler(comboboxContext.value, dropdownHandler.value)
+  createSelectHandler({ inputDisplayValue }, dropdownHandler.value)
 );
 
 const highlightHandler: ComputedRef<HighlightHandler> = computed(() =>
-  createHighlightHandler(comboboxContext.value, selectHandler.value)
+  createHighlightHandler(
+    { filteredOptions, highlightedIndex },
+    selectHandler.value
+  )
 );
 
 const handleInput = () => {
-  dropdownHandler.value.open();
-  filterOptions();
-};
-const filterOptions = () => {
-  filteredOptions.value =
-    inputDisplayValue.value == ""
-      ? props.data
-      : props.data.filter((option) =>
-          option.displayValue
-            .toLowerCase()
-            .includes(inputDisplayValue.value.toLowerCase())
-        );
   highlightedIndex.value = -1;
+
+  dropdownHandler.value.open();
 };
 
-watch(inputDisplayValue, filterOptions);
+const filteredOptions = computed(() => {
+  return inputDisplayValue.value === ""
+    ? props.data
+    : props.data.filter((option) =>
+        option.displayValue
+          .toLowerCase()
+          .includes(inputDisplayValue.value.toLowerCase())
+      );
+});
 watch(inputValue, () => {
+  console.log('emitting from comboxbox:', inputValue.value)
   emit("valueChange", inputValue.value);
 });
 </script>

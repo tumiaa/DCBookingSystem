@@ -1,6 +1,11 @@
-import type { SelectOptionValue } from "./form-item/FormItem";
+import type {
+  SelectOptionsValues,
+  SelectOptionValue,
+} from "./form-item/FormItem";
 export type DropdownHandler = { open: () => void; close: () => void };
-export type SelectHandler = { select: (selectedOpt: SelectOptionValue) => void };
+export type SelectHandler = {
+  select: (selectedOpt: SelectOptionValue) => void;
+};
 export type HighlightHandler = {
   next: () => void;
   previous: () => void;
@@ -9,7 +14,7 @@ export type HighlightHandler = {
 
 export interface ComboboxContext {
   highlightedIndex: Ref<number>;
-  filteredOptions: Ref<any[]>;
+  filteredOptions: Ref<SelectOptionsValues>;
   inputDisplayValue: Ref<string>;
   isDropdownOpen: Ref<boolean>;
 }
@@ -23,35 +28,38 @@ export interface ComboboxContext {
 //Select
 const selectOption = (
   selectedOpt: SelectOptionValue,
-  ctx: ComboboxContext,
+  inputDisplayValue: Ref<string>,
   dropdownHandler: DropdownHandler
 ) => {
-  ctx.inputDisplayValue.value = selectedOpt.displayValue;
+  inputDisplayValue.value = selectedOpt.displayValue;
   dropdownHandler.close();
 };
 
 export const createSelectHandler = (
-  ctx: ComboboxContext,
+  ctx: Pick<ComboboxContext, "inputDisplayValue">,
   dropdownHandler: DropdownHandler
 ): SelectHandler => ({
   select: (selectedOpt: SelectOptionValue) =>
-    selectOption(selectedOpt, ctx, dropdownHandler),
+    selectOption(selectedOpt, ctx.inputDisplayValue, dropdownHandler),
 });
 
 //Highlight
-const highlightNext = (
+const highlightNext = async(
   highlightedIndex: Ref<number>,
   filteredOptions: Ref<any[]>
 ) => {
   if (highlightedIndex.value < filteredOptions.value.length - 1) {
     highlightedIndex.value++;
   }
+  await nextTick()
+
 };
 
-const highlightPrevious = (highlightedIndex: Ref<number>) => {
+const highlightPrevious = async (highlightedIndex: Ref<number>) => {
   if (highlightedIndex.value > 0) {
     highlightedIndex.value--;
   }
+  await nextTick()
 };
 
 const selectHighlighted = (
@@ -65,11 +73,11 @@ const selectHighlighted = (
 };
 
 export const createHighlightHandler = (
-  ctx: ComboboxContext,
+  ctx: Pick<ComboboxContext,'highlightedIndex'|'filteredOptions'>,
   selectHandler: SelectHandler
 ): HighlightHandler => ({
-  next: () => highlightNext(ctx.highlightedIndex, ctx.filteredOptions),
-  previous: () => highlightPrevious(ctx.highlightedIndex),
+  next: async() =>await  highlightNext(ctx.highlightedIndex, ctx.filteredOptions),
+  previous: async() => await highlightPrevious(ctx.highlightedIndex),
   select: () =>
     selectHighlighted(ctx.highlightedIndex, ctx.filteredOptions, selectHandler),
 });
@@ -83,7 +91,9 @@ const openDropdown = (isDropdownOpen: Ref<boolean>) => {
   isDropdownOpen.value = true;
 };
 
-export const createDropdownHandler = (ctx: ComboboxContext): DropdownHandler => ({
+export const createDropdownHandler = (
+  ctx: Pick<ComboboxContext, "isDropdownOpen">
+): DropdownHandler => ({
   open: () => openDropdown(ctx.isDropdownOpen),
   close: () => closeDropdown(ctx.isDropdownOpen),
 });

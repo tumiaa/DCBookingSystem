@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import type { GroupBookingSubformDataItem } from '../../types/booking'
-import { ref, watch } from 'vue'
+import type { GroupBookingSubformDataItem } from "../../types/booking";
+import { ref, watch } from "vue";
 import type {
   FormQDate,
   FormQRange,
   FormQSelect,
   FormQTextArea,
-  FormQuestion
-} from '../form-item/FormItem'
-import FormItemGroupWithSlots from '../form-item/FormItemGroupWithSlots.vue'
-import FormItem from '../form-item/FormItem.vue'
-import { groupBookingFieldData } from './GroupBookingFormFields'
-import ToggleSwitch from '../ToggleSwitch.vue'
+  FormQuestion,
+} from "../form-item/FormItem";
+import FormItemGroupWithSlots from "../form-item/FormItemGroupWithSlots.vue";
+import FormItem from "../form-item/FormItem.vue";
+import { groupBookingFieldData } from "./GroupBookingFormFields";
+import ToggleSwitch from "../ToggleSwitch.vue";
 
 const props = defineProps<{
-  subformData: GroupBookingSubformDataItem[]
+  subformData: GroupBookingSubformDataItem[];
   subformItems: {
-    tourType: FormQSelect<GroupBookingSubformDataItem>
-    attendanceNumber: FormQRange<GroupBookingSubformDataItem>
-    alternativeDates1: FormQDate<GroupBookingSubformDataItem>
-    alternativeDates2: FormQDate<GroupBookingSubformDataItem>
-    alternativeDates3: FormQDate<GroupBookingSubformDataItem>
-    onsiteTravelMethod: FormQSelect<GroupBookingSubformDataItem>
-    specialReq: FormQTextArea<GroupBookingSubformDataItem>
-  }
-}>()
-const emit = defineEmits(['removeSubform', 'submit', 'subformRef'])
+    tourType: FormQSelect<GroupBookingSubformDataItem>;
+    attendanceNumber: FormQRange<GroupBookingSubformDataItem>;
+    alternativeDates1: FormQDate<GroupBookingSubformDataItem>;
+    alternativeDates2: FormQDate<GroupBookingSubformDataItem>;
+    alternativeDates3: FormQDate<GroupBookingSubformDataItem>;
+    onsiteTravelMethod: FormQSelect<GroupBookingSubformDataItem>;
+    specialReq: FormQTextArea<GroupBookingSubformDataItem>;
+  };
+}>();
+const emit = defineEmits(["removeSubform", "submit", "subformRef"]);
 
 function removeSubform(index: number) {
-  emit('removeSubform', index)
+  emit("removeSubform", index);
 }
-const subformRef = ref()
+const subformRef = ref();
 watch(subformRef, () => {
-  emit('subformRef', subformRef)
-})
-const subformItems = ref(props.subformItems)
+  emit("subformRef", subformRef);
+});
+const subformItems = ref(props.subformItems);
 
-const showMessage = ref({ onsiteTravelMethod: false })
+const showMessage = ref({ onsiteTravelMethod: false });
 </script>
 
 <template>
@@ -52,8 +52,15 @@ const showMessage = ref({ onsiteTravelMethod: false })
           <span class="subform-header"
             ><p class="large">Booking {{ index + 1 }}</p>
 
-            <div v-if="props.subformData.length != 1" class="form-item delete-button">
-              <button class="word-button" type="button" @click="removeSubform(index)">
+            <div
+              v-if="props.subformData.length != 1"
+              class="form-item delete-button"
+            >
+              <button
+                class="word-button"
+                type="button"
+                @click="removeSubform(index)"
+              >
                 Remove this booking
               </button>
             </div>
@@ -64,63 +71,55 @@ const showMessage = ref({ onsiteTravelMethod: false })
             </div>
 
             <div class="form-item">
-              <FormItem :item="subformItems.attendanceNumber" :val="subform.attendanceNumber" />
+              <FormItem
+                :item="subformItems.attendanceNumber"
+                :val="subform.attendanceNumber"
+              />
             </div>
             <div class="form-item">
-              <FormItem :item="subformItems.alternativeDates1" :val="subform.alternativeDates1" />
+              <FormItem
+                :item="subformItems.alternativeDates1"
+                :val="subform.alternativeDates1"
+              />
             </div>
             <div class="form-item">
-              <FormItem :item="subformItems.alternativeDates2" :val="subform.alternativeDates2" />
+              <FormItem
+                :item="subformItems.alternativeDates2"
+                :val="subform.alternativeDates2"
+              />
             </div>
             <div class="form-item">
-              <FormItem :item="subformItems.alternativeDates3" :val="subform.alternativeDates3" />
+              <FormItem
+                :item="subformItems.alternativeDates3"
+                :val="subform.alternativeDates3"
+              />
             </div>
             <div class="form-item">
-              <!-- <div class="info-box">
-                <h5>Campus transport</h5>
-                <br />
-                <p>
-                  ANSTO requires visitors to have transport around campus for the tour. <br /><br />
-                  <strong> It is highly recommended that you bring your own bus and driver.</strong>
-                  <br /><br />
-                </p>
-                <div class="small-text">
-                  <p>
-                    *Please note that the bus and driver must remain onsite for the duration of the
-                    tour.
-                  </p>
-                </div>
-              </div> -->
               <FormItem
                 :item="subformItems.onsiteTravelMethod"
                 :val="subform.onsiteTravelMethod"
-                :message="{
-                  show: false,
-                  type: 'warn',
-                  title: 'Warning',
-                  value: `Please understand that the driver and bus must remain within ANSTO for the duration of the tour.`
-                }"
                 @value-change="
                   (v) => {
-                    subform.onsiteTravelMethod = v
-                    showMessage.onsiteTravelMethod = subform.onsiteTravelMethod.includes('bus')
-                      ? true
-                      : false
-                    console.log(showMessage.onsiteTravelMethod)
+                    subform.onsiteTravelMethod = v;
+                    showMessage.onsiteTravelMethod =
+                      subform.onsiteTravelMethod.includes('bus') ? true : false;
+                    console.log(showMessage.onsiteTravelMethod);
                   }
                 "
               />
 
-              <div v-if="showMessage.onsiteTravelMethod" class="checkbox-wrapper message">
+              <div
+                v-if="showMessage.onsiteTravelMethod"
+                class="checkbox-wrapper message"
+              >
                 <p>
                   <strong
-                    >I understand that the driver and bus must remain within ANSTO for the duration
-                    of the tour</strong
+                    >I understand that the driver and bus must remain within
+                    ANSTO for the duration of the tour</strong
                   >
                 </p>
-                <label class="">
-                  <input type="checkbox" true-value="yes" false-value="no" />
-                  <!-- <span class="toggle-slider round"></span> -->
+                <label for="confirm-bus" class="">
+                  <input id="confirm-bus" type="checkbox" true-value="yes" false-value="no" />
                 </label>
               </div>
             </div>
@@ -132,7 +131,10 @@ const showMessage = ref({ onsiteTravelMethod: false })
             </div> -->
 
             <div class="form-item">
-              <FormItem :item="subformItems.specialReq" :val="subform.specialReq" />
+              <FormItem
+                :item="subformItems.specialReq"
+                :val="subform.specialReq"
+              />
             </div>
           </FormItemGroupWithSlots>
         </div>

@@ -6,8 +6,9 @@ export const repository = <T>(fetch: $Fetch<T, NitroFetchRequest>) => ({
     return fetch<string>(url);
   },
 
-  tours: {
+  // tours: {
     async getTourNames(type: string): Promise<SelectOptionsValues> {
+      console.log(type);
       const data = await fetch<SelectOptionsValues>(
         "/api/getTours/:type",
         { params: { type } }
@@ -18,7 +19,7 @@ export const repository = <T>(fetch: $Fetch<T, NitroFetchRequest>) => ({
         value: m.mbrm_tournumber,
       }));
     },
-  },
+  // },
 
   customers: {
     async getCustomerId(filter: string) {

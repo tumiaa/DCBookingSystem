@@ -1,30 +1,44 @@
 <script setup lang="ts">
-import { ref, watch, type Ref } from 'vue'
-import type { FormQuestion } from './FormItem'
-import RadioButtons from '../RadioButtons.vue'
-import RangeSlider from '../RangeSlider.vue'
-import ToggleSwitch from '../ToggleSwitch.vue'
-import type { GroupBookingFormData, GroupBookingSubformDataItem } from '@/types/booking'
-import ComboBox from '../ComboBox.vue'
+import { ref, watch, type Ref } from "vue";
+import type { FormQuestion } from "./FormItem";
+import RadioButtons from "../RadioButtons.vue";
+import RangeSlider from "../RangeSlider.vue";
+import ToggleSwitch from "../ToggleSwitch.vue";
+import type {
+  GroupBookingFormData,
+  GroupBookingSubformDataItem,
+} from "@/types/booking";
+import ComboBox from "../ComboBox.vue";
 
 const props = defineProps<{
-  item: FormQuestion<GroupBookingFormData> | FormQuestion<GroupBookingSubformDataItem>
-  val: any
-  message?: { show: boolean; type: 'error' | 'info'|'warn'; value: string; title?: string }
-}>()
-const emits = defineEmits(['valueChange'])
+  item:
+    | FormQuestion<GroupBookingFormData>
+    | FormQuestion<GroupBookingSubformDataItem>;
+  val: any;
+  message?: {
+    show: boolean;
+    type: "error" | "info" | "warn";
+    value: string;
+    title?: string;
+  };
+}>();
+const emits = defineEmits(["valueChange"]);
 
-const value = ref(props.val)
-const item: Ref<FormQuestion<GroupBookingFormData> | FormQuestion<GroupBookingSubformDataItem>> =
-  ref(props.item)
-
+const value = ref(props.val);
+const item: Ref<
+  FormQuestion<GroupBookingFormData> | FormQuestion<GroupBookingSubformDataItem>
+> = ref(props.item);
 watch(value, () => {
-  emits('valueChange', value.value)
-})
+  console.log("emitting from formItem:", value.value);
+
+  emits("valueChange", value.value);
+});
 </script>
 
 <template>
-  <label v-if="item.label && item.type != 'toggle'" :for="item.id">{{ item.label }}</label>
+  <label v-if="item.label && item.type != 'toggle'" :for="item.id">{{
+    item.label
+  }}</label>
   <input
     v-if="item.type == 'input'"
     :id="item.id"
@@ -40,7 +54,6 @@ watch(value, () => {
     :value="value"
     :id="item.id"
     :data="item.options.values"
-    :options="item.options.values"
     :default-value="item.options.defaultValue"
     :maxWidth="item.maxWidth"
     @value-change="(v) => (value = v)"
@@ -143,10 +156,10 @@ watch(value, () => {
   font-weight: var(--text-h5-font-weight);
 }
 
-.message.warn{
-  color: orangered
+.message.warn {
+  color: orangered;
 }
-.message.error{
-  color:red
+.message.error {
+  color: red;
 }
 </style>

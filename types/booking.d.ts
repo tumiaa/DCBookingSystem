@@ -17,12 +17,26 @@ type GroupBookingFormData_Org = {
 
 type GroupBookingFormData_Extra = {
   howDidYouHear: string
-  // notes: string
   sendMarketingEmail: boolean
 }
-export type GroupBookingFormData = GroupBookingFormData_Personal &
-  GroupBookingFormData_Org &
-  GroupBookingFormData_Extra
+export type GroupBookingFormData = {
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
+  schoolName: string
+  businessPhone: string
+  addressStreet: string
+  addressCity: string
+  addressPostcode: string
+  addressState: string
+  addressCountry: string
+  howDidYouHear: string
+  sendMarketingEmail: boolean
+}
+// GroupBookingFormData_Personal &
+//   GroupBookingFormData_Org &
+//   GroupBookingFormData_Extra
 
 export type GroupBookingSubformDataItem = {
   tourType: string
