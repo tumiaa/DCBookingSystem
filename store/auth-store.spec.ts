@@ -8,7 +8,7 @@ const testValues = {
   test: { mode: 'test', subkey: 'i-am-a-test-key', expected_url: 'dc-test' },
   dev: { mode: 'development', subkey: 'i-am-a-dev-key', expected_url: 'dc-dev' }
 }
-//TODO: this can probably be revamped/made redundant with the new nuxt change, skipping for now
+//REFACTOR: this can probably be revamped/made redundant with the new nuxt change, skipping for now
 describe.skip('useAuthStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())

@@ -10,9 +10,9 @@ import { groupBookingExpectedData as ExpectedData } from './GroupBookingExpected
 import { createPinia, setActivePinia } from 'pinia'
 import { createEmailBody, createFilters, getPostData, useKeyMap } from '@/store/booking.util'
 import { MapGroupBookingBooking, MapGroupBookingCustomer } from '../../types/booking.d'
-//TODO: clean these up, there's too many of them
+//CLEAN: clean these up, there's too many of them
 
-//TODO: This probably needs to be revamped/some of it redundant with the nuxt change.
+//REFACTOR: This probably needs to be revamped/some of it redundant with the nuxt change.
 // Skipping anything that uses the booking store for now.
 describe('GroupBookingUtil', () => {
   beforeEach(() => {

@@ -83,7 +83,7 @@ export const createEmailBody = (
   const { ctxEmailDCSignature, ctxEmailNewBookingBodyAck, ctxEmailSalutation } = ctxData
   const greetings = `<p>${ctxEmailSalutation} ${bookingData.firstName},</p>`
   const bookingInfo = [
-    //TODO: this won't work because tourType is the id, not the name
+    //FIXME: this won't work because tourType is the id, not the name
     `Tour name: ${subBookingData.tourType}`,
     `Tour attendees planned: ${subBookingData.attendanceNumber}`,
     `1st preferred date: ${subBookingData.alternativeDates1}`,
