@@ -62,7 +62,7 @@ function parseFilters(stringArr: string[]) {
   //   filterStr = filterStr + str
   // })
   // return filterStr
-  return stringArr.join(' ')
+  return stringArr.join('')
 }
 
 function getPostData<T extends Record<string, any>>(

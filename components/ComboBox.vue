@@ -1,85 +1,83 @@
 <script setup lang="ts">
-import { computed, ref, watch, type Ref } from 'vue'
-import type { SelectOptionsValues, SelectOptionValue } from './form-item/FormItem'
+import { computed, ref, watch, type Ref } from "vue";
+import type {
+  SelectOptionsValues,
+  SelectOptionValue,
+} from "./form-item/FormItem";
+
+import {createDropdownHandler, createSelectHandler, createHighlightHandler} from './ComboBox.util'
 const props = defineProps<{
-  data: SelectOptionsValues
-  defaultValue?: string | boolean
-  value: any
-  id: string
-  maxWidth?: number
-}>()
+  data: SelectOptionsValues;
+  defaultValue?: string | boolean;
+  value: any;
+  id: string;
+  maxWidth?: number;
+}>();
 
-const emit = defineEmits(['valueChange'])
+const emit = defineEmits(["valueChange"]);
 
-const inputDisplayValue: Ref<string> = ref('')
-const inputValue: Ref<string | boolean> = computed(() => {
-  return props.data.find((x) => x.displayValue == inputDisplayValue.value)?.value ?? ''
-})
-const isDropdownOpen = ref(false)
-const filteredOptions = ref(props.data)
-const highlightedIndex = ref(-1)
+const inputDisplayValue: Ref<string> = ref("");
+const inputValue: ComputedRef<string | boolean | number> = computed(() => {
+  return (
+    props.data.find((x) => x.displayValue == inputDisplayValue.value)?.value ??
+    ""
+  );
+});
+const isDropdownOpen = ref(false);
+const filteredOptions = ref(props.data);
+const highlightedIndex = ref(-1);
+
+const comboboxContext: ComputedRef<ComboboxContext> = computed(() => ({
+  highlightedIndex,
+  filteredOptions,
+  inputDisplayValue,
+  isDropdownOpen,
+}));
+
+const dropdownHandler: ComputedRef<DropdownHandler> = computed(() =>
+  createDropdownHandler(comboboxContext.value)
+);
+
+const selectHandler: ComputedRef<SelectHandler> = computed(() =>
+  createSelectHandler(comboboxContext.value, dropdownHandler.value)
+);
+
+const highlightHandler: ComputedRef<HighlightHandler> = computed(() =>
+  createHighlightHandler(comboboxContext.value, selectHandler.value)
+);
 
 const handleInput = () => {
-  openDropdown()
-  filterOptions()
-}
+  dropdownHandler.value.open();
+  filterOptions();
+};
 const filterOptions = () => {
   filteredOptions.value =
-    inputDisplayValue.value == ''
+    inputDisplayValue.value == ""
       ? props.data
       : props.data.filter((option) =>
-          option.displayValue.toLowerCase().includes(inputDisplayValue.value.toLowerCase())
-        )
-  highlightedIndex.value = -1
-}
+          option.displayValue
+            .toLowerCase()
+            .includes(inputDisplayValue.value.toLowerCase())
+        );
+  highlightedIndex.value = -1;
+};
 
-const selectOption = (option: SelectOptionValue) => {
-  inputDisplayValue.value = option.displayValue
-  closeDropdown()
-}
-
-const highlightNext = () => {
-  if (highlightedIndex.value < filteredOptions.value.length - 1) {
-    highlightedIndex.value++
-  }
-}
-
-const highlightPrevious = () => {
-  if (highlightedIndex.value > 0) {
-    highlightedIndex.value--
-  }
-}
-
-const selectHighlighted = () => {
-  if (highlightedIndex.value !== -1) {
-    selectOption(filteredOptions.value[highlightedIndex.value])
-  }
-}
-
-const closeDropdown = () => {
-  isDropdownOpen.value = false
-}
-
-const openDropdown = () => {
-  isDropdownOpen.value = true
-}
-
-watch(inputDisplayValue, filterOptions)
+watch(inputDisplayValue, filterOptions);
 watch(inputValue, () => {
-  emit('valueChange', inputValue.value)
-})
+  emit("valueChange", inputValue.value);
+});
 </script>
 <template>
   <div class="combobox">
     <input
       v-model="inputDisplayValue"
       @input="handleInput"
-      @click="openDropdown"
-      @focus="openDropdown"
-      @keydown.down.prevent="highlightNext"
-      @keydown.up.prevent="highlightPrevious"
-      @keydown.enter.prevent="selectHighlighted"
-      @blur="closeDropdown"
+      @click="dropdownHandler.open"
+      @focus="dropdownHandler.open"
+      @keydown.down.prevent="highlightHandler.next"
+      @keydown.up.prevent="highlightHandler.previous"
+      @keydown.enter.prevent="highlightHandler.select"
+      @blur="dropdownHandler.close"
       type="text"
       :id="props.id"
       :class="props.maxWidth ? 'sized' : 'span-sized'"
@@ -92,10 +90,10 @@ watch(inputValue, () => {
         v-for="(option, index) in filteredOptions"
         :key="index"
         :class="{ highlighted: index === highlightedIndex }"
-        @mousedown="selectOption(option)"
+        @mousedown="selectHandler.select(option)"
         @mouseover="
           () => {
-            highlightedIndex = index
+            highlightedIndex = index;
           }
         "
       >
