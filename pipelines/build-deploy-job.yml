@@ -5,22 +5,10 @@ parameters:
 jobs:
 - job: build_and_deploy
   displayName: 'Build and Deploy to ${{ parameters.environment }}'
-  dependsOn: set_env_vars
-  condition: succeeded()
   pool:
     vmImage: ubuntu-latest
   variables:
     - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
-    - name: NUXT_PUBLIC_ENV_URL
-      value: $(NUXT_PUBLIC_ENV_URL)
-    - name: NUXT_AAD_ENDPOINT_BASE
-      value: $(NUXT_AAD_ENDPOINT_BASE)
-    - name: NUXT_TENANT_ID
-      value: $(NUXT_TENANT_ID)
-    - name: NUXT_CLIENT_ID
-      value: $(NUXT_CLIENT_ID)
-    - name: NUXT_CLIENT_SECRET
-      value: $(NUXT_CLIENT_SECRET)
   steps:
     - checkout: self
       submodules: true
