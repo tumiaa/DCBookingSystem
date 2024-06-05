@@ -12,11 +12,11 @@ jobs:
     steps:
       - script: |
           if [[ "${{ parameters.environment }}" == "DEV" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_DEV }}"
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_DEV)"
           elif [[ "${{ parameters.environment }}" == "TEST" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_TEST }}"
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_TEST)"
           elif [[ "${{ parameters.environment }}" == "PROD" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_PROD }}"
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_PROD)"
           else
             echo "Environment not recognized"
           fi
