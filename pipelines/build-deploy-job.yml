@@ -1,30 +1,31 @@
 parameters:
   - name: environment
     type: string
-  - name: env_url
-    type: string
 
 jobs:
 - job: build_and_deploy
   displayName: 'Build and Deploy to ${{ parameters.environment }}'
+  dependsOn: set_env_vars
+  condition: succeeded()
   pool:
     vmImage: ubuntu-latest
   variables:
     - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
   steps:
-  - checkout: self
-    submodules: true
-  - bash: |
-      echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL]$(parameters.env_url)"
-      echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE]$(AAD_ENDPOINT_BASE)"
-      echo "##vso[task.setvariable variable=NUXT_TENANT_ID]$(TENANT_ID)"
-      echo "##vso[task.setvariable variable=NUXT_CLIENT_ID]$(CLIENT_ID)"
-      echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET]$(CLIENT_SECRET)"
-  - task: AzureStaticWebApp@0
-    inputs:
-      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_DUNE_0C6E15E00)
-      app_location: "/" # App source code path
-      api_location: ".output/server" # Api source code path - optional
-      output_location: ".output/public" # Built app content directory - optional
-      verbose: true
-      production_branch: 'main'
+    - checkout: self
+      submodules: true
+    - script: |
+        echo "NUXT_PUBLIC_ENV_URL: $(NUXT_PUBLIC_ENV_URL)"
+        echo "NUXT_AAD_ENDPOINT_BASE: $(NUXT_AAD_ENDPOINT_BASE)"
+        echo "NUXT_TENANT_ID: $(NUXT_TENANT_ID)"
+        echo "NUXT_CLIENT_ID: $(NUXT_CLIENT_ID)"
+        echo "NUXT_CLIENT_SECRET: $(NUXT_CLIENT_SECRET)"
+      displayName: 'Print environment variables for debugging'
+    - task: AzureStaticWebApp@0
+      inputs:
+        azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_DUNE_0C6E15E00)
+        app_location: "/" # App source code path
+        api_location: ".output/server" # Api source code path - optional
+        output_location: ".output/public" # Built app content directory - optional
+        verbose: true
+        production_branch: 'main'
