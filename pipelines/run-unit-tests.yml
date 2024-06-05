@@ -11,6 +11,8 @@ jobs:
         submodules: true
       - template: set-env-variables-job.yml
       - task: NodeTool@0
+        inputs:
+          versionSpec: 20.x
       - bash: |
           npm install
           npm run test:unit
