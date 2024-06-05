@@ -20,6 +20,7 @@ stages:
           environment: DEV
       - job: unit_tests
         displayName: Run Unit Tests
+        dependsOn: set_env_vars
         pool:
           vmImage: ubuntu-latest
         steps:
