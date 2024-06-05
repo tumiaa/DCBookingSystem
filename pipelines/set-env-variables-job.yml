@@ -8,15 +8,19 @@ jobs:
     pool:
       vmImage: ubuntu-latest
     variables:
-      - name: envName
-        value: ${{ parameters.environment }}
       - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
     steps:
       - script: |
-          ENV_URL_VAR="ENV_URL_${envName}"
-          NUXT_PUBLIC_ENV_URL=$(eval echo \$$ENV_URL_VAR)
+          if [[ "${{ parameters.environment }}" == "DEV" ]]; then
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_DEV }}"
+          elif [[ "${{ parameters.environment }}" == "TEST" ]]; then
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_TEST }}"
+          elif [[ "${{ parameters.environment }}" == "PROD" ]]; then
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]${{ parameters.ENV_URL_PROD }}"
+          else
+            echo "Environment not recognized"
+          fi
           
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true]$NUXT_PUBLIC_ENV_URL"
           echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE;isOutput=true;]$(AAD_ENDPOINT_BASE)"
           echo "##vso[task.setvariable variable=NUXT_TENANT_ID;isOutput=true;]$(TENANT_ID)"
           echo "##vso[task.setvariable variable=NUXT_CLIENT_ID;isOutput=true;]$(CLIENT_ID)"

@@ -6,12 +6,9 @@ trigger:
       - "*"
 
 variables:
-  - name: isMainBranch
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  - name: isTestBranch
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
-  - name: isDevBranch
-    value: $[and(ne(variables['Build.SourceBranch'], 'refs/heads/main')), ne(variables['Build.SourceBranch'], 'refs/heads/test')]
+  isMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isTestBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+  isDevBranch: $[and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'],'refs/heads/test'))]
 
 stages:
   - stage: Dev
