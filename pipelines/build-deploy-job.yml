@@ -5,7 +5,7 @@ parameters:
 jobs:
 - job: build_and_deploy
   displayName: 'Build and Deploy to ${{ parameters.environment }}'
-  dependsOn: set_env_vars
+  dependsOn: ['set_env_vars', 'unit_tests']
   pool:
     vmImage: ubuntu-latest
   variables:
