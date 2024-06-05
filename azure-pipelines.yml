@@ -14,9 +14,23 @@ stages:
   - stage: Dev
     condition: and(succeeded(), eq(variables['isDevBranch'], true))
     jobs:
+      
       - template: pipelines/set-env-variables-job.yml
         parameters:
           environment: DEV
+      - job: unit_tests
+        displayName: Run Unit Tests
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+        - checkout: self
+          submodules: true
+        - task: NodeTool@0
+          inputs:
+            versionSpec: '16.x' # Specify the Node.js version
+        - bash: |
+            npm install
+            npm run test:unit
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: DEV
