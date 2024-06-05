@@ -6,9 +6,12 @@ trigger:
       - "*"
 
 variables:
-  isMainBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  isTestBranch: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
-  isDevBranch: $[and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'],'refs/heads/test'))]
+  - name: isMainBranch
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  - name: isTestBranch
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/test')]
+  - name: isDevBranch
+    value: $[and(ne(variables['Build.SourceBranch'], 'refs/heads/main')), ne(variables['Build.SourceBranch'], 'refs/heads/test')]
 
 stages:
   - stage: Dev
@@ -16,11 +19,10 @@ stages:
     jobs:
       - template: pipelines/set-env-variables-job.yml
         parameters:
-          environment: dev
-          env_url: $(ENV_URL_DEV)
+          environment: DEV
       - template: pipelines/build-deploy-job.yml
         parameters:
-          environment: dev
+          environment: DEV
 
   - stage: Test
     condition: and(succeeded(), eq(variables['isTestBranch'], true))
@@ -28,11 +30,10 @@ stages:
     jobs:
       - template: pipelines/set-env-variables-job.yml
         parameters:
-          environment: test
-          env_url: $(ENV_URL_TEST)
+          environment: TEST
       - template: pipelines/build-deploy-job.yml
         parameters:
-          environment: test
+          environment: TEST
 
   - stage: Prod
     condition: and(succeeded(), eq(variables['isMainBranch'], true))
@@ -40,8 +41,7 @@ stages:
     jobs:
       - template: pipelines/set-env-variables-job.yml
         parameters:
-          environment: prod
-          env_url: $(ENV_URL_PROD)
+          environment: PROD
       - template: pipelines/build-deploy-job.yml
         parameters:
-          environment: prod
+          environment: PROD

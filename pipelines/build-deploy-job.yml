@@ -10,9 +10,26 @@ jobs:
     vmImage: ubuntu-latest
   variables:
     - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
+    
+    - name: NUXT_PUBLIC_ENV_URL
+      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_PUBLIC_ENV_URL']] 
+   
+    - name: NUXT_AAD_ENDPOINT_BASE
+      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_AAD_ENDPOINT_BASE']] 
+
+    - name: NUXT_TENANT_ID
+      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_TENANT_ID']]
+
+    - name: NUXT_CLIENT_ID
+      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_CLIENT_ID']]  
+    
+    - name: NUXT_CLIENT_SECRET
+      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_CLIENT_SECRET']]  
+
   steps:
     - checkout: self
       submodules: true
+      
     - script: |
         echo "NUXT_PUBLIC_ENV_URL: $(NUXT_PUBLIC_ENV_URL)"
         echo "NUXT_AAD_ENDPOINT_BASE: $(NUXT_AAD_ENDPOINT_BASE)"
