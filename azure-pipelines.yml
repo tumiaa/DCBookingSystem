@@ -11,33 +11,37 @@ variables:
   isDevBranch: $[and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables['Build.SourceBranch'],'refs/heads/test'))]
 
 stages:
-  - stage: SetEnvVars
+  - stage: Dev
+    condition: and(succeeded(), eq(variables['isDevBranch'], true))
     jobs:
       - template: pipelines/set-env-variables-job.yml
         parameters:
-          environment: $(environment)
-          env_url: $(env_url)
-
-  - stage: Dev
-    dependsOn: SetEnvVars
-    condition: and(succeeded(), eq(variables['isDevBranch'], true))
-    jobs:
+          environment: dev
+          env_url: $(ENV_URL_DEV)
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: dev
 
   - stage: Test
-    dependsOn: Dev
     condition: and(succeeded(), eq(variables['isTestBranch'], true))
+    dependsOn: Dev
     jobs:
+      - template: pipelines/set-env-variables-job.yml
+        parameters:
+          environment: test
+          env_url: $(ENV_URL_TEST)
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: test
 
   - stage: Prod
-    dependsOn: Test
     condition: and(succeeded(), eq(variables['isMainBranch'], true))
+    dependsOn: Test
     jobs:
+      - template: pipelines/set-env-variables-job.yml
+        parameters:
+          environment: prod
+          env_url: $(ENV_URL_PROD)
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: prod
