@@ -5,38 +5,16 @@ parameters:
 jobs:
 - job: build_and_deploy
   displayName: 'Build and Deploy to ${{ parameters.environment }}'
-  dependsOn: ['set_env_vars', 'unit_tests']
+  dependsOn: unit_tests
   pool:
     vmImage: ubuntu-latest
   variables:
     - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
-    
-    - name: NUXT_PUBLIC_ENV_URL
-      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_PUBLIC_ENV_URL']] 
-   
-    - name: NUXT_AAD_ENDPOINT_BASE
-      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_AAD_ENDPOINT_BASE']] 
-
-    - name: NUXT_TENANT_ID
-      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_TENANT_ID']]
-
-    - name: NUXT_CLIENT_ID
-      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_CLIENT_ID']]  
-    
-    - name: NUXT_CLIENT_SECRET
-      value: $[dependencies.set_env_vars.outputs['setVariable.NUXT_CLIENT_SECRET']]  
 
   steps:
     - checkout: self
       submodules: true
-      
-    - script: |
-        echo "NUXT_PUBLIC_ENV_URL: $(NUXT_PUBLIC_ENV_URL)"
-        echo "NUXT_AAD_ENDPOINT_BASE: $(NUXT_AAD_ENDPOINT_BASE)"
-        echo "NUXT_TENANT_ID: $(NUXT_TENANT_ID)"
-        echo "NUXT_CLIENT_ID: $(NUXT_CLIENT_ID)"
-        echo "NUXT_CLIENT_SECRET: $(NUXT_CLIENT_SECRET)"
-      displayName: 'Print environment variables for debugging'
+    - template: pipelines/set-env-variables-job.yml  
     - task: AzureStaticWebApp@0
       inputs:
         azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_DUNE_0C6E15E00)
