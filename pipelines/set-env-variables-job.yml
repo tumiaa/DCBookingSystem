@@ -5,15 +5,17 @@ parameters:
     type: string
 
 jobs:
-- job: set_env_vars
-  displayName: 'Set Environment Variables for ${{ parameters.environment }}'
-  pool:
-    vmImage: ubuntu-latest
-  steps:
-    - script: |
-        echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL]${{ parameters.env_url }}"
-        echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE]$(AAD_ENDPOINT_BASE)"
-        echo "##vso[task.setvariable variable=NUXT_TENANT_ID]$(TENANT_ID)"
-        echo "##vso[task.setvariable variable=NUXT_CLIENT_ID]$(CLIENT_ID)"
-        echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET]$(CLIENT_SECRET)"
-      displayName: 'Set environment variables'
+  - job: set_env_vars
+    displayName: "Set Environment Variables for ${{ parameters.environment }}"
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
+    steps:
+      - script: |
+          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL]${{ parameters.env_url }}"
+          echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE]$(AAD_ENDPOINT_BASE)"
+          echo "##vso[task.setvariable variable=NUXT_TENANT_ID]$(TENANT_ID)"
+          echo "##vso[task.setvariable variable=NUXT_CLIENT_ID]$(CLIENT_ID)"
+          echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET]$(CLIENT_SECRET)"
+        displayName: "Set environment variables"
