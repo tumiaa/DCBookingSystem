@@ -25,9 +25,9 @@ stages:
     condition: and(succeeded(), eq(variables['isTestBranch'], true))
     dependsOn: Dev
     jobs:
-      # - template: pipelines/set-env-variables-job.yml
-      #   parameters:
-      #     environment: TEST
+      - template: pipelines/run-unit-tests.yml
+        parameters:
+          environment: TEST
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: TEST
@@ -36,9 +36,9 @@ stages:
     condition: and(succeeded(), eq(variables['isMainBranch'], true))
     dependsOn: Test
     jobs:
-      # - template: pipelines/set-env-variables-job.yml
-      #   parameters:
-      #     environment: PROD
+      - template: pipelines/run-unit-tests.yml
+        parameters:
+          environment: PROD
       - template: pipelines/build-deploy-job.yml
         parameters:
           environment: PROD
