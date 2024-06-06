@@ -10,6 +10,8 @@ jobs:
       - checkout: self
         submodules: true
       - template: set-env-variables-job.yml
+        parameters:
+          environment: ${{ parameters.environment }}
       - task: NodeTool@0
         inputs:
           versionSpec: 20.x

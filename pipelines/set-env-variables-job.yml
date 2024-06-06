@@ -1,45 +1,28 @@
-# parameters:
-#   - name: environment
-#     type: string
-    
-# jobs:
-#   - job: set_env_vars
-#     displayName: "Set Environment Variables for ${{ parameters.environment }}"
-#     pool:
-#       vmImage: ubuntu-latest
-#     variables:
-#       - group: Azure-Static-Web-Apps-agreeable-dune-0c6e15e00-variable-group
-#     steps:
-#       - script: |
-#           if [[ "${{ parameters.environment }}" == "DEV" ]]; then
-#           echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_DEV)"
-#           elif [[ "${{ parameters.environment }}" == "TEST" ]]; then
-#           echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_TEST)"
-#           elif [[ "${{ parameters.environment }}" == "PROD" ]]; then
-#           echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_PROD)"
-#           else
-#             echo "Environment not recognized"
-#           fi
-          
-#           echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE;isOutput=true;]$(AAD_ENDPOINT_BASE)"
-#           echo "##vso[task.setvariable variable=NUXT_TENANT_ID;isOutput=true;]$(TENANT_ID)"
-#           echo "##vso[task.setvariable variable=NUXT_CLIENT_ID;isOutput=true;]$(CLIENT_ID)"
-#           echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET;isOutput=true;]$(CLIENT_SECRET)"
-#         displayName: "Set environment variables"
-
 steps:
  - script: |
-          if [[ "${{ parameters.environment }}" == "DEV" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_DEV)"
-          elif [[ "${{ parameters.environment }}" == "TEST" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_TEST)"
-          elif [[ "${{ parameters.environment }}" == "PROD" ]]; then
-          echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_PROD)"
-          else
-            echo "Environment not recognized"
-          fi
-          
-          echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE;isOutput=true;]$(AAD_ENDPOINT_BASE)"
-          echo "##vso[task.setvariable variable=NUXT_TENANT_ID;isOutput=true;]$(TENANT_ID)"
-          echo "##vso[task.setvariable variable=NUXT_CLIENT_ID;isOutput=true;]$(CLIENT_ID)"
-          echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET;isOutput=true;]$(CLIENT_SECRET)"
+    echo "Setting environment variables for environment: ${{ parameters.environment }}"
+
+    if [[ "${{ parameters.environment }}" == "DEV" ]]; then
+      echo "Setting DEV environment variables"
+      echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_DEV)"
+      echo "NUXT_PUBLIC_ENV_URL=$(ENV_URL_DEV)"
+    elif [[ "${{ parameters.environment }}" == "TEST" ]]; then
+      echo "Setting TEST environment variables"
+      echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_TEST)"
+      echo "NUXT_PUBLIC_ENV_URL=$(ENV_URL_TEST)"
+    elif [[ "${{ parameters.environment }}" == "PROD" ]]; then
+      echo "Setting PROD environment variables"
+      echo "##vso[task.setvariable variable=NUXT_PUBLIC_ENV_URL;isOutput=true;]$(ENV_URL_PROD)"
+      echo "NUXT_PUBLIC_ENV_URL=$(ENV_URL_PROD)"
+    else
+      echo "Environment not recognized: ${{ parameters.environment }}"
+    fi
+
+    echo "##vso[task.setvariable variable=NUXT_AAD_ENDPOINT_BASE;isOutput=true;]$(AAD_ENDPOINT_BASE)"
+    echo "NUXT_AAD_ENDPOINT_BASE=$(AAD_ENDPOINT_BASE)"
+    echo "##vso[task.setvariable variable=NUXT_TENANT_ID;isOutput=true;]$(TENANT_ID)"
+    echo "NUXT_TENANT_ID=$(TENANT_ID)"
+    echo "##vso[task.setvariable variable=NUXT_CLIENT_ID;isOutput=true;]$(CLIENT_ID)"
+    echo "NUXT_CLIENT_ID=$(CLIENT_ID)"
+    echo "##vso[task.setvariable variable=NUXT_CLIENT_SECRET;isOutput=true;]$(CLIENT_SECRET)"
+    echo "NUXT_CLIENT_SECRET=$(CLIENT_SECRET)"
