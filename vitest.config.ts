@@ -22,7 +22,7 @@ export default defineVitestConfig({
   // plugins: [vue()],
   test: {
     environment: "happy-dom",
-    // environmentOptions: { nuxt: { dotenv: { fileName: ".env" } } },
+    environmentOptions: { nuxt: { dotenv: { fileName: ".env" } } },
   },
   resolve: {
     alias: {

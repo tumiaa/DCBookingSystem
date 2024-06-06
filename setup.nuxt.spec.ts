@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 // import { getConfig } from './config';
-
+import { useRuntimeConfig } from "#app";
 import App from "@/app.vue";
 
 describe("Environment Variables", () => {

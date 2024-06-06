@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout: self
         submodules: true
-      - template: set-env-variables-job.yml
+      - template: export-env-variables.yml
         parameters:
           environment: ${{ parameters.environment }}
       - task: NodeTool@0
