@@ -22,6 +22,7 @@ export default defineVitestConfig({
   // plugins: [vue()],
   test: {
     environment: "happy-dom",
+    //FIXME: make it so that this env file it given per test, not globally !important
     environmentOptions: { nuxt: { dotenv: { fileName: ".env" } } },
   },
   resolve: {

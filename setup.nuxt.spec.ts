@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { useRuntimeConfig } from "#app";
 import App from "@/app.vue";
 
+//TODO: make it so that only this test uses the env file.
 describe("Environment Variables", () => {
   it("should get the correct values from environment variables", async () => {
     const config = useRuntimeConfig();
