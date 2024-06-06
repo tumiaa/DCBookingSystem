@@ -9,7 +9,7 @@
 - [ ] [security!] all APIs are authenticated
 - [ ] [security!] all APIs are debounced or throttled
 - [ ] [security!] all APIs can handle bot-defence (captcha?)
-
+- [ ] [tech] set the env variable in the pipeline library for prod url
 
 #### -- Form Item Changes --
 
@@ -85,6 +85,7 @@
 
 - [ ] [bug] Unbreaking the form formatting (why css why)
 - [ ] [bug] Check store for unnecessary repeat calls
+- [ ] [error!!] Page not loading due to getAuth failing
   <br>
 
 #### -- Good Code --
